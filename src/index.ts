@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { secureHeaders } from "hono/secure-headers";
-import rateLimiter from "@/config/rate-limiter.config";
+import { rateLimiter } from "@/config/rate-limiter.config";
 import { log } from "@/helpers/logger.helper";
 import { register } from "@/monitoring/metrics";
 import { HTTPException } from "hono/http-exception";
@@ -14,7 +14,7 @@ const app = new Hono();
 app.use("*", logger());
 app.use("*", cors());
 app.use("*", secureHeaders());
-app.use("*", rateLimiter);
+app.use("*", rateLimiter());
 
 app.get("/health", (c) => {
     return c.json({

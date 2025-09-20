@@ -1,4 +1,4 @@
-import { rateLimiter } from "hono-rate-limiter";
+import { rateLimiter as rateLimiterMiddleware } from "hono-rate-limiter";
 import type { Context } from "hono";
 
 /**
@@ -80,9 +80,10 @@ const keyGenerator = (c: Context): string => {
     return `fallback:${fallbackKey}`;
 };
 
-export default rateLimiter({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    limit: 100,
-    standardHeaders: "draft-6",
-    keyGenerator,
-});
+export const rateLimiter = () =>
+    rateLimiterMiddleware({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        limit: 100,
+        standardHeaders: "draft-6",
+        keyGenerator,
+    });
