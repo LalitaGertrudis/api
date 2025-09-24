@@ -59,7 +59,7 @@ export class RedisService {
         }
 
         try {
-            const result = await this.client.ping('test');
+            const result = await this.client.ping("test");
             return { success: true, data: result };
         } catch (error) {
             this.isConnected = false;
