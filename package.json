@@ -11,9 +11,9 @@
         "prettier:write": "prettier . --write",
         "prepare": "husky",
         "docker:build": "docker build -t api .",
-        "docker:start": "docker-compose up -d",
+        "docker:start": "docker-compose up -d api",
         "docker:stop": "docker-compose down",
-        "docker:dev": "docker-compose --profile dev up -d api-dev",
+        "docker:dev": "docker-compose --profile dev up -d api-dev redis",
         "docker:dev:stop": "docker-compose --profile dev down",
         "docker:logs": "docker-compose logs -f"
     },

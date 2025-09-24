@@ -1,3 +1,8 @@
+networks:
+    api-network:
+        driver: bridge
+        external: false
+
 services:
     api:
         build: .
@@ -8,6 +13,10 @@ services:
         env_file:
             - .env
         restart: unless-stopped
+        networks:
+            - api-network
+        depends_on:
+            - redis
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
             interval: 30s
@@ -24,6 +33,7 @@ services:
         environment:
             - NODE_ENV=development
             - PORT=3000
+            - REDIS_URL=redis://redis:6379
         env_file:
             - .env
         volumes:
@@ -32,5 +42,27 @@ services:
             - ./tsconfig.json:/usr/src/app/tsconfig.json:ro
         command: ["bun", "dev"]
         restart: unless-stopped
+        networks:
+            - api-network
+        depends_on:
+            - redis
         profiles:
             - dev
+
+    redis:
+        image: redis:7-alpine
+        ports:
+            - "6379:6379"
+        volumes:
+            - redis_data:/data
+        restart: unless-stopped
+        networks:
+            - api-network
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+
+volumes:
+    redis_data:

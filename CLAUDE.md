@@ -14,6 +14,8 @@ boilerplate for api servers written in typescript and powered by bun
 - import/export syntax
 - destructure imports as posible
 - import types syntax `import type {Foo} from 'bar'`
+- use path resolver `@/`
+- never use emojis
 
 ## workflow
 
