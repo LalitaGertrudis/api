@@ -1,4 +1,4 @@
-import { register } from "@/monitoring/metrics";
+import { register } from "@/monitoring/default.metrics";
 import { Hono } from "hono";
 
 const main = new Hono();
