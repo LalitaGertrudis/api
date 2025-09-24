@@ -1,0 +1,36 @@
+services:
+    api:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=production
+        env_file:
+            - .env
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+
+    api-dev:
+        build:
+            context: .
+            target: development
+        ports:
+            - "3000:3000"
+        environment:
+            - NODE_ENV=development
+            - PORT=3000
+        env_file:
+            - .env
+        volumes:
+            - ./src:/usr/src/app/src
+            - ./package.json:/usr/src/app/package.json:ro
+            - ./tsconfig.json:/usr/src/app/tsconfig.json:ro
+        command: ["bun", "dev"]
+        restart: unless-stopped
+        profiles:
+            - dev

@@ -11,6 +11,6 @@ api.use(
     })
 );
 
-api.get("/", (c) => c.text("Hello World"));
+api.get("/", (c) => c.text("api ok"));
 
 export { api };

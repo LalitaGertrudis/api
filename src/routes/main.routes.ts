@@ -1,15 +1,17 @@
+import { envConfig } from "@/config/env.config";
 import { register } from "@/monitoring/default.metrics";
 import { Hono } from "hono";
 
 const main = new Hono();
 
-main.get("/", (c) => c.text("Hello World"));
+main.get("/", (c) => c.text("api server ok"));
 
 main.get("/health", (c) => {
     return c.json({
         status: "ok",
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
+        node_env: envConfig.node_env,
     });
 });
 

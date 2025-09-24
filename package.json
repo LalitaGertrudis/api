@@ -4,12 +4,18 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev": "bun run ./src/index.ts",
+        "dev": "bun --watch run ./src/index.ts",
         "test": "bun test",
         "linter:fix": "eslint --fix",
         "prettier:check": "prettier . --check",
         "prettier:write": "prettier . --write",
-        "prepare": "husky"
+        "prepare": "husky",
+        "docker:build": "docker build -t api .",
+        "docker:start": "docker-compose up -d",
+        "docker:stop": "docker-compose down",
+        "docker:dev": "docker-compose --profile dev up -d api-dev",
+        "docker:dev:stop": "docker-compose --profile dev down",
+        "docker:logs": "docker-compose logs -f"
     },
     "devDependencies": {
         "@eslint/js": "^9.35.0",

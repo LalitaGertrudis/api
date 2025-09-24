@@ -19,4 +19,9 @@ app.route("/api", api);
 
 app.onError(globalErrorHandler);
 
-export default app;
+const port = process.env.PORT || 3000;
+
+export default {
+    port,
+    fetch: app.fetch,
+};
