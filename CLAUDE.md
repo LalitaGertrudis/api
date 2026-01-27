@@ -7,6 +7,7 @@ boilerplate for api servers written in typescript and powered by bun
 - **bun dev** - run server
 - **bun linter:fix** - eslint fix
 - **bun prettier:write** - code styling
+- **bun ts:check** - type checking
 - **bun test** - run tests
 
 ## code style
@@ -29,3 +30,7 @@ boilerplate for api servers written in typescript and powered by bun
 - never use `any` types for typescript
 - keep code documented, do not verbose keep comments clear, concise and useful
 - do not install old packages
+
+## agentic mode
+
+- strictly follow the rules from ./AGENTS.md

@@ -8,6 +8,7 @@ api.use(
     "*",
     jwk({
         jwks_uri: `https://${envConfig.jwks_uri}/.well-known/jwks.json`,
+        alg: ["RS256"],
     })
 );
 

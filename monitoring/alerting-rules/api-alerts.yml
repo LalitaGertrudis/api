@@ -1,0 +1,66 @@
+groups:
+    - name: api_alerts
+      interval: 30s
+      rules:
+          # API Health Alerts
+          - alert: APIDown
+            expr: up{job="api"} == 0
+            for: 1m
+            labels:
+                severity: critical
+                service: api
+            annotations:
+                summary: "API is down"
+                description: "API instance {{ $labels.instance }} is down for more than 1 minute"
+
+          - alert: HighResponseTime
+            expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="api"}[5m])) > 1
+            for: 5m
+            labels:
+                severity: warning
+                service: api
+            annotations:
+                summary: "High API response time"
+                description: "95th percentile response time is above 1 second (current: {{ $value }}s)"
+
+          - alert: HighErrorRate
+            expr: rate(http_requests_total{job="api",status=~"5.."}[5m]) > 0.05
+            for: 5m
+            labels:
+                severity: critical
+                service: api
+            annotations:
+                summary: "High error rate"
+                description: "Error rate is above 5% (current: {{ $value | humanizePercentage }})"
+
+          # Resource Alerts
+          - alert: HighMemoryUsage
+            expr: (1 - (node_memory_MemAvailable_bytes{job="api"} / node_memory_MemTotal_bytes{job="api"})) > 0.9
+            for: 5m
+            labels:
+                severity: warning
+                service: api
+            annotations:
+                summary: "High memory usage"
+                description: "Memory usage is above 90% (current: {{ $value | humanizePercentage }})"
+
+          - alert: HighCPUUsage
+            expr: rate(process_cpu_seconds_total{job="api"}[5m]) > 0.8
+            for: 5m
+            labels:
+                severity: warning
+                service: api
+            annotations:
+                summary: "High CPU usage"
+                description: "CPU usage is above 80% (current: {{ $value | humanizePercentage }})"
+
+          # Redis Alerts
+          - alert: RedisDown
+            expr: up{job="redis"} == 0
+            for: 1m
+            labels:
+                severity: critical
+                service: redis
+            annotations:
+                summary: "Redis is down"
+                description: "Redis instance {{ $labels.instance }} is down for more than 1 minute"

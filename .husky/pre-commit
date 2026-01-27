@@ -1,3 +1,4 @@
 bun prettier:write
 bun linter:fix
+bun ts:check
 bun test
