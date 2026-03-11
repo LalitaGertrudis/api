@@ -81,8 +81,6 @@ services:
         restart: unless-stopped
         networks:
             - api-network
-        depends_on:
-            - api
 
     alertmanager:
         image: prom/alertmanager:latest

@@ -29,8 +29,8 @@ CMD ["bun", "dev"]
 
 # Production stage
 FROM base AS production
-RUN addgroup --system --gid 1001 bunuser && \
-    adduser --system --uid 1001 bunuser
+RUN groupadd --system --gid 1001 bunuser && \
+    useradd --system --uid 1001 --gid bunuser bunuser
 
 COPY --from=build --chown=bunuser:bunuser /usr/src/app/node_modules ./node_modules
 COPY --from=build --chown=bunuser:bunuser /usr/src/app/package.json ./

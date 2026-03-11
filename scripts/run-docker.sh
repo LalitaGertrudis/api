@@ -25,8 +25,8 @@ trap cleanup SIGINT SIGTERM
 # Check if dev mode is requested
 if [ "$1" = "dev" ]; then
     echo "Starting services in development mode with hot reloading..."
-    # Start all services with dev profile (includes api-dev with hot reload + all supporting services)
-    docker-compose --profile dev up --build
+    # Start all services explicitly for dev profile (includes api-dev with hot reload + all supporting services)
+    docker-compose up --build api-dev redis prometheus alertmanager grafana
 else
     echo "Starting services in production mode..."
     # Start all services except api-dev (production mode)
