@@ -16,6 +16,7 @@
         "docker:stop": "docker-compose down",
         "docker:dev": "scripts/run-docker.sh dev",
         "docker:dev:stop": "docker-compose --profile dev down",
+        "docker:destroy": "docker-compose down -v --rmi all --remove-orphans",
         "docker:logs": "docker-compose logs -f",
         "monitoring:logs": "docker-compose logs -f prometheus alertmanager"
     },
