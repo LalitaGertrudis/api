@@ -11,6 +11,7 @@ import { globalErrorHandler } from "@/helpers/global-error-handler.helper";
 import { api } from "@/routes/api.routes";
 import { main } from "@/routes/main.routes";
 import { redisService } from "@/services/redis.service";
+import { dbService } from "@/services/db.service";
 import { logger } from "@/helpers/logger.helper";
 import { metricsMiddleware } from "@/middleware/metrics.middleware";
 import {
@@ -55,6 +56,8 @@ export const startApp = async () => {
     try {
         await redisService.connect();
         logger.info("Application started successfully with Redis connection");
+
+        await dbService.connect();
     } catch (error) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
@@ -69,6 +72,7 @@ export const startApp = async () => {
 export const shutdown = async () => {
     logger.info("Shutting down gracefully");
     await redisService.disconnect();
+    await dbService.disconnect();
 };
 
 /**

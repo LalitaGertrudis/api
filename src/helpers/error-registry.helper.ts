@@ -6,13 +6,7 @@ import type { ContentfulStatusCode } from "hono/utils/http-status";
  */
 export enum ErrorCode {
     INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
-    VALIDATION_ERROR = "VALIDATION_ERROR",
-    UNAUTHORIZED = "UNAUTHORIZED",
-    FORBIDDEN = "FORBIDDEN",
-    NOT_FOUND = "NOT_FOUND",
-    RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED",
     BAD_REQUEST = "BAD_REQUEST",
-    SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE",
 }
 
 /**

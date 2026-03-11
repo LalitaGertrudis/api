@@ -11,6 +11,7 @@ import {
     logMiddleware,
 } from "@/middleware/tracing.middleware";
 import { redisService } from "@/services/redis.service";
+import { settingsService } from "@/services/settings.service";
 
 describe("API & Middlewares", () => {
     describe("Routes", () => {
@@ -19,6 +20,7 @@ describe("API & Middlewares", () => {
                 success: true,
                 data: "PONG",
             });
+            spyOn(settingsService, "getNumber").mockResolvedValue(100);
         });
 
         it("should respond to GET /", async () => {

@@ -2,12 +2,6 @@ import { RedisClient } from "bun";
 import { envConfig } from "@/config/env.config";
 import { logger } from "@/helpers/logger.helper";
 
-export interface RedisOperationResult<T = unknown> {
-    success: boolean;
-    data?: T;
-    error?: string;
-}
-
 /**
  * Service to manage Redis connections and operations.
  * Implements the Singleton pattern.
@@ -72,7 +66,11 @@ export class RedisService {
     /**
      * Sends a PING command to Redis to check connectivity.
      */
-    public async ping(): Promise<RedisOperationResult<string>> {
+    public async ping(): Promise<{
+        success: boolean;
+        data?: string;
+        error?: string;
+    }> {
         if (!this.client || !this.isConnected) {
             return { success: false, error: "Redis client not connected" };
         }

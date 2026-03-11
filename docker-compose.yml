@@ -16,7 +16,10 @@ services:
         networks:
             - api-network
         depends_on:
-            - redis
+            redis:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
         healthcheck:
             test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
             interval: 30s
@@ -34,18 +37,24 @@ services:
             - NODE_ENV=development
             - PORT=3000
             - REDIS_URL=redis://redis:6379
+            - DATABASE_URL=postgresql://johndoe:randompassword@postgres:5432/mydb?schema=public
         env_file:
             - .env
         volumes:
             - ./src:/usr/src/app/src
+            - ./prisma:/usr/src/app/prisma
+            - ./scripts:/usr/src/app/scripts
             - ./package.json:/usr/src/app/package.json:ro
             - ./tsconfig.json:/usr/src/app/tsconfig.json:ro
-        command: ["bun", "dev"]
+        command: ["sh", "./scripts/docker-dev-entrypoint.sh"]
         restart: unless-stopped
         networks:
             - api-network
         depends_on:
-            - redis
+            redis:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
         profiles:
             - dev
 
@@ -63,6 +72,25 @@ services:
             interval: 30s
             timeout: 10s
             retries: 3
+
+    postgres:
+        image: postgres:15-alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: johndoe
+            POSTGRES_PASSWORD: randompassword
+            POSTGRES_DB: mydb
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        restart: unless-stopped
+        networks:
+            - api-network
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U johndoe -d mydb"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
 
     prometheus:
         image: prom/prometheus:latest
@@ -116,6 +144,7 @@ services:
 
 volumes:
     redis_data:
+    postgres_data:
     prometheus_data:
     alertmanager_data:
     grafana_data:

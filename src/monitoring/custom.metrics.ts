@@ -19,12 +19,6 @@ export const httpRequestTotal = new Counter({
     registers: [register],
 });
 
-export const activeConnections = new Gauge({
-    name: "api_active_connections",
-    help: "Number of active connections",
-    registers: [register],
-});
-
 export const requestsInFlight = new Gauge({
     name: "api_requests_in_flight",
     help: "Number of requests currently being processed",
@@ -38,15 +32,5 @@ export const errorTotal = new Counter({
     name: "api_errors_total",
     help: "Total number of errors",
     labelNames: ["type", "route"],
-    registers: [register],
-});
-
-/**
- * @category Rate Limiting Metrics
- */
-export const rateLimitHits = new Counter({
-    name: "api_rate_limit_hits_total",
-    help: "Total number of rate limit hits",
-    labelNames: ["route"],
     registers: [register],
 });

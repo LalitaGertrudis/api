@@ -37,3 +37,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 monitoring/prometheus/data/
 monitoring/alertmanager/data/
 monitoring/grafana/data/
+
+/generated/prisma

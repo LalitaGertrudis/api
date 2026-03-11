@@ -1,5 +1,6 @@
 import { rateLimiter as rateLimiterMiddleware } from "hono-rate-limiter";
 import type { Context } from "hono";
+import { settingsService } from "@/services/settings.service";
 
 /**
  * Key generator function for rate limiting
@@ -70,8 +71,12 @@ export const keyGenerator = (c: Context): string => {
 
 export const rateLimiter = () =>
     rateLimiterMiddleware({
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        limit: 100,
+        windowMs: 60 * 1000, // 1 minute (matching rate_limit.requests_per_minute)
+        limit: async () =>
+            await settingsService.getNumber(
+                "rate_limit.requests_per_minute",
+                100
+            ),
         standardHeaders: "draft-6",
         keyGenerator,
     });

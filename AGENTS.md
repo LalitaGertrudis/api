@@ -95,6 +95,7 @@ For highly specific tasks, read and adhere exactly to the rules found in these l
 - **Run Tests Sequentially**: You must execute `bun test` and verify all tests pass ONLY AFTER the "Run formatting" step above has completed successfully without errors.
 - **Use native features**: Take advantage of `Bun.env`, `Bun.serve`, and native high-speed standard libraries.
 - **Handle errors gracefully**: Throw standard custom errors caught by the `globalErrorHandler`.
+- **Validate code quality:** Ensure you are removing deprecated, dead or unreachable code after code changes.
 
 ### Ask first:
 

@@ -26,6 +26,8 @@ describe("Coverage Boost", () => {
         );
         const { redisService } = await import("@/services/redis.service");
         spyOn(redisService, "disconnect").mockResolvedValue();
+        const { dbService } = await import("@/services/db.service");
+        spyOn(dbService, "disconnect").mockResolvedValue();
 
         registerHandlers();
 
@@ -42,36 +44,39 @@ describe("Coverage Boost", () => {
     it("index.ts startApp success", async () => {
         const { redisService } = await import("@/services/redis.service");
         spyOn(redisService, "connect").mockResolvedValue();
+        const { dbService } = await import("@/services/db.service");
+        spyOn(dbService, "connect").mockResolvedValue();
         await startApp();
     });
 
     it("index.ts startApp failure", async () => {
         const { redisService } = await import("@/services/redis.service");
         spyOn(redisService, "connect").mockRejectedValue(new Error("Down"));
+        const { dbService } = await import("@/services/db.service");
+        spyOn(dbService, "connect").mockResolvedValue();
         await startApp();
     });
 
     it("env config validation branches", () => {
-        const exitSpy = spyOn(process, "exit").mockImplementation(
-            (() => {}) as unknown as (code?: string | number | null) => never
-        );
         spyOn(console, "error").mockImplementation(() => {});
 
         const validEnv = {
             NODE_ENV: "test",
             JWKS_URI: "http://test",
             PORT: "3000",
+            DATABASE_URL: "postgresql://localhost",
         };
         const config = validateEnv(validEnv);
         expect(config.node_env).toBe("test");
 
+        let errorThrown = false;
         try {
             validateEnv({});
-        } catch {
-            // Expected
+        } catch (e) {
+            errorThrown = true;
+            expect((e as Error).message).toBe("Invalid environment variables");
         }
-        expect(exitSpy).toHaveBeenCalledWith(1);
-        exitSpy.mockRestore();
+        expect(errorThrown).toBe(true);
     });
 
     it("logger branch coverage", async () => {
