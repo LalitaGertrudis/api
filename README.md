@@ -23,19 +23,21 @@ A high-performance, enterprise-ready boilerplate for TypeScript API servers. It 
 The preferred method for local development utilizes Bun natively for execution speed, alongside Docker for supporting infrastructure dependencies such as Redis.
 
 1. **Install dependencies:**
-   ```bash
-   bun install
-   ```
+
+    ```bash
+    bun install
+    ```
 
 2. **Start the development server (with hot-reloading):**
-   ```bash
-   bun run dev
-   ```
+
+    ```bash
+    bun run dev
+    ```
 
 3. **Run tests:**
-   ```bash
-   bun test
-   ```
+    ```bash
+    bun test
+    ```
 
 ## Docker Deployment and Operations
 
