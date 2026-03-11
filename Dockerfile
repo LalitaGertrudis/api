@@ -27,6 +27,18 @@ ENV NODE_ENV=development
 
 CMD ["bun", "dev"]
 
+# Migration stage
+FROM base AS migration
+COPY package.json bun.lock ./
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY . .
+
+RUN bunx prisma generate
+
+ENV NODE_ENV=production
+
+CMD ["sh", "-c", "bunx prisma migrate deploy && bun run prisma/seed.ts"]
+
 # Production stage
 FROM base AS production
 RUN groupadd --system --gid 1001 bunuser && \
