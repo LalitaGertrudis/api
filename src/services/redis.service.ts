@@ -46,7 +46,9 @@ export class RedisService {
                 error instanceof Error ? error.message : "Unknown error";
             this.isConnected = false;
             this.client = null;
-            throw new Error(`Redis connection failed: ${errorMessage}`);
+            throw new Error(`Redis connection failed: ${errorMessage}`, {
+                cause: error,
+            });
         }
     }
 
